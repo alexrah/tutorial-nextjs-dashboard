@@ -5,7 +5,7 @@ import {Fragment} from 'react';
 export default async function InvoicesPage(){
 
   const client = await db.connect();
-  const invoices: QueryResult<Invoice & Customer > = await client.sql`SELECT * FROM invoices LEFT JOIN customers ON invoices.customer_id = customers.id`;
+  const invoices = await client.sql<Invoice & Customer>`SELECT * FROM invoices LEFT JOIN customers ON invoices.customer_id = customers.id`;
 
   return (
     <div>
