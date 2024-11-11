@@ -5,7 +5,7 @@ import {Fragment} from 'react';
 export default async function InvoicesPage(){
 
   const client = await db.connect();
-  const invoices = await client.sql<Invoice & Customer>`SELECT * FROM invoices LEFT JOIN customers ON invoices.customer_id = customers.id`;
+  const invoices = await client.sql<Omit<Invoice, 'customer_id'> & Pick<Customer, 'name'>>`SELECT i.id, i.amount, i.date, i.status, c.name FROM invoices AS i LEFT JOIN customers AS c ON i.customer_id = c.id`;
 
   return (
     <div>
@@ -13,7 +13,7 @@ export default async function InvoicesPage(){
       <table>
         <thead>
         <tr>
-          <td>ID</td>
+          <td>Invoice ID</td>
           <td>Customer</td>
           <td>Amount</td>
           <td>Date</td>
