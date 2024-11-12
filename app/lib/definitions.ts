@@ -3,6 +3,7 @@
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
 import {HomeIcon} from "@heroicons/react/24/outline";
+import type {ReadonlyURLSearchParams} from "next/navigation";
 
 export type User = {
   id: string;
@@ -93,4 +94,23 @@ export type tLink = {
   name: string;
   href: string;
   icon: typeof HomeIcon;
+}
+
+export type tPageProps<P,S> = {
+  params?: Promise<P>;
+  searchParams?: Promise<S>;
+}
+
+export type tSearchParams = {
+  query?: string;
+  page?: string;
+}
+
+export interface tReadonlyURLSearchParams extends ReadonlyURLSearchParams {
+  get(name: keyof tSearchParams): string | null;
+}
+
+export interface tURLSearchParams extends URLSearchParams {
+  get(name: keyof tSearchParams): string | null;
+  set(name: keyof tSearchParams, value: string): void
 }

@@ -1,37 +1,37 @@
-import {db, QueryResult} from '@vercel/postgres';
-import type { Invoice, Customer} from "@/app/lib/definitions";
-import {Fragment} from 'react';
+import Pagination from '@/app/ui/invoices/pagination';
+import Search from '@/app/ui/search';
+import Table from '@/app/ui/invoices/table';
+import { CreateInvoice } from '@/app/ui/invoices/buttons';
+import { lusitana } from '@/app/ui/fonts';
+import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
+import { Suspense } from 'react';
+import type { tPageProps, tSearchParams } from '@/app/lib/definitions'
+import {fetchInvoicesPages} from '@/app/lib/data';
 
-export default async function InvoicesPage(){
+export default async function InvoicesPage({searchParams}:tPageProps<null, tSearchParams>) {
 
-  const client = await db.connect();
-  const invoices = await client.sql<Omit<Invoice, 'customer_id'> & Pick<Customer, 'name'>>`SELECT i.id, i.amount, i.date, i.status, c.name FROM invoices AS i LEFT JOIN customers AS c ON i.customer_id = c.id`;
+  console.log('+++ InvoicesPage +++');
+
+  const searchParamsData = await searchParams;
+  const query = searchParamsData?.query || '';
+  const currentPage = Number(searchParamsData?.page) || 1;
+  const totalPages = await fetchInvoicesPages(query);
 
   return (
-    <div>
-      <h1>Invoices Page</h1>
-      <table>
-        <thead>
-        <tr>
-          <td>Invoice ID</td>
-          <td>Customer</td>
-          <td>Amount</td>
-          <td>Date</td>
-          <td>Status</td>
-        </tr>
-        </thead>
-        <tbody>
-          {invoices.rows.map(invoice => (
-            <tr key={invoice.id}>
-              <td>{invoice.id}</td>
-              <td>{invoice.name}</td>
-              <td>{invoice.amount}</td>
-              <td>{typeof invoice.date}</td>
-              <td>{invoice.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="w-full">
+      <div className="flex w-full items-center justify-between">
+        <h1 className={`${lusitana.className} text-2xl`}>Invoices</h1>
+      </div>
+      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+        <Search placeholder="Search invoices..." />
+        <CreateInvoice />
+      </div>
+      {/*<Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>*/}
+        <Table query={query} currentPage={currentPage} />
+      {/*</Suspense>*/}
+      <div className="mt-5 flex w-full justify-center">
+         <Pagination totalPages={totalPages} />
+      </div>
     </div>
-  )
+  );
 }
