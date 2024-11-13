@@ -96,7 +96,7 @@ export type tLink = {
   icon: typeof HomeIcon;
 }
 
-export type tPageProps<P,S> = {
+export interface tPageProps<P,S> {
   params?: Promise<P>;
   searchParams?: Promise<S>;
 }
