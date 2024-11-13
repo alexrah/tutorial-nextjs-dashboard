@@ -1,3 +1,3 @@
-import {InvoiceCreateRoute} from "@/app/routes/InvoiceCreateRoute";
+import {InvoiceCreatePageRoute} from "@/app/routes/InvoiceCreatePageRoute";
 
-export default InvoiceCreateRoute
+export default InvoiceCreatePageRoute

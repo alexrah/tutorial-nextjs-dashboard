@@ -1,6 +1,11 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+'use client';
+
+import { PencilIcon, PlusIcon, TrashIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import {deleteInvoice} from "@/app/lib/actions";
+import {useActionState} from 'react';
+import {useShowToolTip} from "@/app/lib/hooks";
+import {clsx} from "clsx";
 
 export function CreateInvoice() {
   return (
@@ -27,14 +32,43 @@ export function UpdateInvoice({ id }: { id: string }) {
 
 export function DeleteInvoice({ id }: { id: string }) {
 
-  const deleteInvoiceWithId = deleteInvoice.bind(null,id)
+  const deleteInvoiceWithId = deleteInvoice.bind(null,id);
+
+  const [rowCount, submitAction, isPending] = useActionState<number|null>(deleteInvoiceWithId, null);
+
+  const showToolTip = useShowToolTip({rowCount, isPending});
+
+  console.log('rowCount',rowCount);
 
   return (
-    <form action={deleteInvoiceWithId}>
+    <form action={submitAction} className='relative'>
       <button className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
       </button>
+      {showToolTip &&
+        <ToolTip msg='Not Found' severity='error'/>
+      }
     </form>
   );
+}
+
+function ToolTip({msg,severity = 'error'}:{msg:string, severity?: 'error'|'info'|'warning'}){
+
+  return (
+    <div className={
+      clsx(`absolute flex flex-col h-full items-center p-1 rounded-md right-0 top-0 w-[70px] fade-out`,
+        {
+          'bg-red-500' : severity === 'error',
+          'bg-blue-500' : severity === 'info',
+          'bg-yellow-500' : severity === 'warning',
+        }
+      )
+    }>
+      <ExclamationCircleIcon className='w-5 text-white'/>
+      <span className='text-center text-xs text-white break-words'>
+        {msg}
+      </span>
+    </div>
+  )
 }

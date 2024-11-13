@@ -25,6 +25,15 @@ const config: Config = {
           transform: 'translateX(100%)',
         },
       },
+      fadeOut: {
+        '0%': { opacity: '1', visibility: 'visible', display: 'flex' },
+        '30%': { opacity: '1', visibility: 'visible', display: 'flex' },
+        '99%': { opacity: '0', height: '100%', visibility: 'hidden' },
+        '100%': { opacity: '0', height: '0', visibility: 'hidden' },
+      },
+    },
+    animation: {
+      fadeOut: 'fadeOut 1s ease-out',
     },
   },
   plugins: [require('@tailwindcss/forms')],

@@ -1,3 +1,3 @@
-import {InvoicesEditRoute} from "@/app/routes/InvoiceEditRoute";
+import {InvoicesEditRoute} from "@/app/routes/InvoiceEditPageRoute";
 
 export default InvoicesEditRoute

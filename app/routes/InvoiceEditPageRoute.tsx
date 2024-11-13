@@ -1,10 +1,10 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
-import type {tPageProps} from "@/app/lib/definitions";
+import type {tPageRouteProps} from "@/app/lib/definitions";
 
 type tParams = {id:string};
-interface tInvoicesEditPage extends tPageProps<tParams, any> {
+interface tInvoicesEditPage extends tPageRouteProps<tParams, any> {
   params: Promise<tParams>
 }
 

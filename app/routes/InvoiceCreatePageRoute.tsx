@@ -2,7 +2,7 @@ import Form from '@/app/ui/invoices/create-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
 
-export async function InvoiceCreateRoute() {
+export async function InvoiceCreatePageRoute() {
   const customers = await fetchCustomers();
 
   return (

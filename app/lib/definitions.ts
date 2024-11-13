@@ -96,9 +96,14 @@ export type tLink = {
   icon: typeof HomeIcon;
 }
 
-export interface tPageProps<P,S> {
+export interface tPageRouteProps<P,S> {
   params?: Promise<P>;
   searchParams?: Promise<S>;
+}
+
+export interface tErrorRouteProps {
+  error: Error & { digest?: string };
+  reset: () => void;
 }
 
 export type tSearchParams = {

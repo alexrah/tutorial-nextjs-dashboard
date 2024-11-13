@@ -5,10 +5,10 @@ import { CreateInvoice } from '@/app/ui/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import type { tPageProps, tSearchParams } from '@/app/lib/definitions'
+import type { tPageRouteProps, tSearchParams } from '@/app/lib/definitions'
 import {fetchInvoicesPages} from '@/app/lib/data';
 
-export default async function InvoicesPage({searchParams}:tPageProps<null, tSearchParams>) {
+export default async function InvoicesPage({searchParams}:tPageRouteProps<null, tSearchParams>) {
 
   console.log('+++ InvoicesPage +++');
 
