@@ -114,3 +114,9 @@ export interface tURLSearchParams extends URLSearchParams {
   get(name: keyof tSearchParams): string | null;
   set(name: keyof tSearchParams, value: string): void
 }
+
+export type tInvoiceFormData = {
+  customerId: string;
+  amount: string;
+  status: 'pending'|'paid'
+}

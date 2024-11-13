@@ -2,7 +2,7 @@ import SideNav from "@/app/ui/dashboard/sidenav";
 import type {ReactNode} from "react";
 
 
-export const experimental_ppr = false;
+export const experimental_ppr = true;
 
 export default function DashboardLayout({
   children,

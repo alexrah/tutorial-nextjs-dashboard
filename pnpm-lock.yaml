@@ -8,6 +8,9 @@ dependencies:
   '@heroicons/react':
     specifier: ^2.1.4
     version: 2.1.4(react@19.0.0-rc-f38c22b244-20240704)
+  '@k1eu/typed-formdata':
+    specifier: ^0.9.1
+    version: 0.9.1
   '@tailwindcss/forms':
     specifier: ^0.5.7
     version: 0.5.7(tailwindcss@3.4.4)
@@ -339,6 +342,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
+
+  /@k1eu/typed-formdata@0.9.1:
+    resolution: {integrity: sha512-kb1obYdrIiHExcVqbItk76DTE3xJI3UGweH/siAKpqV+EBYRKMlEmwdeWn3krfM+SuKhVPL6TrVB61I/Gd+W8A==}
     dev: false
 
   /@mapbox/node-pre-gyp@1.0.11:

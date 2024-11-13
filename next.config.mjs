@@ -2,7 +2,10 @@
 
 const nextConfig = {
   experimental:{
-    ppr: 'incremental'
+    ppr: 'incremental',
+    // staleTimes: {
+    //   dynamic: 30
+    // }
   }
 };
 
