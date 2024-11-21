@@ -5,7 +5,7 @@ import type {tPageRouteProps} from "@/app/lib/definitions";
 import {notFound} from "next/navigation";
 
 type tParams = {id:string};
-interface tInvoicesEditPage extends tPageRouteProps<tParams, any> {
+interface tInvoicesEditPage extends tPageRouteProps<tParams, null> {
   params: Promise<tParams>
 }
 

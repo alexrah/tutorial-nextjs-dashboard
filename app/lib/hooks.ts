@@ -18,7 +18,7 @@ export function useShowToolTip({rowCount, isPending}:tUseToolTipProps){
       },2000)
     }
 
-  }, [isPending]);
+  }, [isPending, rowCount]);
 
   return showToolTip;
 

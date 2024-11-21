@@ -18,8 +18,6 @@ export default async function DashboardPage() {
   ]);
 
   const {numberOfCustomers, numberOfInvoices, totalPaidInvoices, totalPendingInvoices} = data[0];
-  const latestInvoices = data[1];
-
 
   return (
     <main>
