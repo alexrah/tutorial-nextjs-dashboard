@@ -23,9 +23,10 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
     prevFormState: null
   };
 
-  const [formState,submitAction, isPending] = useActionState<tInvoiceFormState, FormData>(createInvoice, createInvoiceInitialState)
+  const [formState,submitAction] = useActionState<tInvoiceFormState, FormData>(createInvoice, createInvoiceInitialState)
   
   console.log('prevFormState',formState.prevFormState);
+  console.log(typeof formState.prevFormState?.customerId !== 'undefined' ? formState.prevFormState?.customerId : '')
 
   return (
     <form action={submitAction}>
@@ -40,20 +41,22 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               id="customer"
               name="customerId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
+              aria-describedby='customer-error'
+              defaultValue={ typeof formState.prevFormState?.customerId !== 'undefined' ? formState.prevFormState?.customerId : ''}
+              key={ typeof formState.prevFormState?.customerId !== 'undefined' ? formState.prevFormState?.customerId : 'default'}
             >
               <option value="" disabled>
                 Select a customer
               </option>
               {customers.map((customer) => (
-                <option key={customer.id} value={customer.id} selected={customer.id === formState.prevFormState?.customerId}>
+                <option key={customer.id} value={customer.id} >
                   {customer.name}
                 </option>
               ))}
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
-          <FormErrorField>{formState.error?.customerId}</FormErrorField>
+          <FormErrorField id="customer-error">{formState.error?.customerId}</FormErrorField>
         </div>
 
         {/* Invoice Amount */}
@@ -71,11 +74,12 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 placeholder="Enter USD amount"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 defaultValue={formState.prevFormState?.amount}
+                aria-describedby='amount-error'
               />
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
-          <FormErrorField>{formState.error?.amount}</FormErrorField>
+          <FormErrorField id='amount-error'>{formState.error?.amount}</FormErrorField>
         </div>
 
         {/* Invoice Status */}
@@ -108,6 +112,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   type="radio"
                   value="paid"
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                  aria-describedby='status-error'
                   defaultChecked={'paid' === formState.prevFormState?.status}
                 />
                 <label
@@ -119,7 +124,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               </div>
             </div>
           </div>
-          <FormErrorField>{formState.error?.status}</FormErrorField>
+          <FormErrorField id='status-error'>{formState.error?.status}</FormErrorField>
         </fieldset>
 
           {formState.message &&
@@ -144,10 +149,10 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
   );
 }
 
-const FormErrorField = ({children}:{children:ReactNode}) => {
+const FormErrorField = ({children, id}:{children:ReactNode, id: string}) => {
 
   return (
-    <div className={clsx({
+    <div id={id} aria-live='polite' aria-atomic={true} className={clsx({
       'mt-1': children
     })}>
       <p className={
