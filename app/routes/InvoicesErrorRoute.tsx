@@ -4,6 +4,7 @@ import type {tErrorRouteProps} from "@/app/lib/definitions";
 export function InvoicesErrorRoute({error, reset}:tErrorRouteProps) {
 
   // console.error(error.message);
+  console.log(error);
   console.error(error.stack?.split('\n')[1]);
 
   return (

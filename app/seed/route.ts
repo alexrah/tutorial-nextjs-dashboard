@@ -108,7 +108,7 @@ export async function GET() {
   });
   try {
     await client.sql`BEGIN`;
-    // await seedUsers();
+    await seedUsers();
     await seedCustomers();
     await seedInvoices();
     await seedRevenue();

@@ -1,6 +1,5 @@
-import {db, QueryResult} from '@vercel/postgres';
+import {db} from '@vercel/postgres';
 import type { Invoice, Customer} from "@/app/lib/definitions";
-import {Fragment} from 'react';
 
 export default async function InvoicesTestPage(){
 
