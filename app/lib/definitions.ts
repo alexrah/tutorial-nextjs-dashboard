@@ -90,6 +90,16 @@ export type InvoiceForm = {
   status: 'pending' | 'paid';
 };
 
+export type tInvoiceFormState = {
+  message: string|null;
+  error?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
+  }
+  prevFormState?: tInvoiceFormDataRaw|null
+}
+
 export type tLink = {
   name: string;
   href: string;
@@ -120,8 +130,16 @@ export interface tURLSearchParams extends URLSearchParams {
   set(name: keyof tSearchParams, value: string): void
 }
 
-export type tInvoiceFormData = {
+export interface tInvoiceFormDataRaw extends Record<string, string>{
   customerId: string;
   amount: string;
   status: 'pending'|'paid'
+}
+
+export type tInvoiceFormDataValidated = {
+  customerId: string;
+  amountInCents: number;
+  status: 'pending'|'paid'
+  currentDate: string;
+
 }

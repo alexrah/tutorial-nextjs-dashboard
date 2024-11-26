@@ -1,3 +1,5 @@
+'use client';
+
 import { CustomerField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
@@ -8,10 +10,25 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 import {createInvoice} from "@/app/lib/actions";
+import {ReactNode, useActionState} from "react";
+import type {tInvoiceFormState} from "@/app/lib/definitions";
+import {clsx} from "clsx";
+
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
+
+  const createInvoiceInitialState:tInvoiceFormState = {
+    message: null,
+    error: {},
+    prevFormState: null
+  };
+
+  const [formState,submitAction, isPending] = useActionState<tInvoiceFormState, FormData>(createInvoice, createInvoiceInitialState)
+  
+  console.log('prevFormState',formState.prevFormState);
+
   return (
-    <form action={createInvoice}>
+    <form action={submitAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
@@ -29,13 +46,14 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 Select a customer
               </option>
               {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
+                <option key={customer.id} value={customer.id} selected={customer.id === formState.prevFormState?.customerId}>
                   {customer.name}
                 </option>
               ))}
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
+          <FormErrorField>{formState.error?.customerId}</FormErrorField>
         </div>
 
         {/* Invoice Amount */}
@@ -52,10 +70,12 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 step="0.01"
                 placeholder="Enter USD amount"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                defaultValue={formState.prevFormState?.amount}
               />
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          <FormErrorField>{formState.error?.amount}</FormErrorField>
         </div>
 
         {/* Invoice Status */}
@@ -72,6 +92,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   type="radio"
                   value="pending"
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                  defaultChecked={'pending' === formState.prevFormState?.status}
                 />
                 <label
                   htmlFor="pending"
@@ -87,6 +108,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   type="radio"
                   value="paid"
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                  defaultChecked={'paid' === formState.prevFormState?.status}
                 />
                 <label
                   htmlFor="paid"
@@ -97,7 +119,17 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               </div>
             </div>
           </div>
+          <FormErrorField>{formState.error?.status}</FormErrorField>
         </fieldset>
+
+          {formState.message &&
+            <div className='my-2'>
+              <p className='text-white font-bold p-1 bg-red-600'>{formState.message}</p>
+
+            </div>
+
+          }
+
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
@@ -110,4 +142,21 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
       </div>
     </form>
   );
+}
+
+const FormErrorField = ({children}:{children:ReactNode}) => {
+
+  return (
+    <div className={clsx({
+      'mt-1': children
+    })}>
+      <p className={
+        clsx(`text-white font-bold bg-red-600`,{
+          'p-1': children
+        })
+      }>
+        {children}
+      </p>
+    </div>
+  )
 }
