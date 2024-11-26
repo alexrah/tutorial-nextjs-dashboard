@@ -12,18 +12,18 @@ import { Button } from '@/app/ui/button';
 import {createInvoice} from "@/app/lib/actions";
 import {ReactNode, useActionState} from "react";
 import type {tInvoiceFormState} from "@/app/lib/definitions";
-import {clsx} from "clsx";
+import {FormErrorField} from "@/app/ui/invoices/FormErrorField";
 
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
 
-  const createInvoiceInitialState:tInvoiceFormState = {
+  const invoiceInitialState:tInvoiceFormState = {
     message: null,
     error: {},
     prevFormState: null
   };
 
-  const [formState,submitAction] = useActionState<tInvoiceFormState, FormData>(createInvoice, createInvoiceInitialState)
+  const [formState,submitAction] = useActionState<tInvoiceFormState, FormData>(createInvoice, invoiceInitialState)
   
   console.log('prevFormState',formState.prevFormState);
   console.log(typeof formState.prevFormState?.customerId !== 'undefined' ? formState.prevFormState?.customerId : '')
@@ -96,6 +96,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   type="radio"
                   value="pending"
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                  aria-describedby='status-error'
                   defaultChecked={'pending' === formState.prevFormState?.status}
                 />
                 <label
@@ -128,11 +129,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         </fieldset>
 
           {formState.message &&
-            <div className='my-2'>
-              <p className='text-white font-bold p-1 bg-red-600'>{formState.message}</p>
-
-            </div>
-
+            <FormErrorField id="error-message">{formState.message}</FormErrorField>
           }
 
       </div>
@@ -147,21 +144,4 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
       </div>
     </form>
   );
-}
-
-const FormErrorField = ({children, id}:{children:ReactNode, id: string}) => {
-
-  return (
-    <div id={id} aria-live='polite' aria-atomic={true} className={clsx({
-      'mt-1': children
-    })}>
-      <p className={
-        clsx(`text-white font-bold bg-red-600`,{
-          'p-1': children
-        })
-      }>
-        {children}
-      </p>
-    </div>
-  )
 }

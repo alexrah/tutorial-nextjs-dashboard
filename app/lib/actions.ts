@@ -16,7 +16,7 @@ const invoiceFormSchema = z.object({
   date: z.string()
 })
 
-function validateInvoiceFormData(formData: FormData):tInvoiceFormDataValidated|tInvoiceFormState{
+function validateInvoiceFormData(formData: FormData, errorMsg = ''):tInvoiceFormDataValidated|tInvoiceFormState{
 
   const formDataParsed = parseFormData<tInvoiceFormDataRaw>(formData);
 
@@ -35,7 +35,7 @@ function validateInvoiceFormData(formData: FormData):tInvoiceFormDataValidated|t
     console.log('validatedFields.data',validatedFields.data);
 
     return {
-      message: 'Missing fields',
+      message: `Missing fields: ${errorMsg}`,
       error: validatedFields.error.flatten().fieldErrors,
       prevFormState: {
         customerId: formDataParsed.get('customerId'),
@@ -60,10 +60,8 @@ function validateInvoiceFormData(formData: FormData):tInvoiceFormDataValidated|t
 }
 
 export async function createInvoice(prevState:tInvoiceFormState, formData: FormData): Promise<tInvoiceFormState> {
-  console.log('createInvoice formData',Array.from(formData.entries()));
   console.log('formData values', Object.fromEntries(formData.entries()));
 
-  // const {customerId, amountInCents, status, currentDate} = validateInvoiceFormData(formData);
   const validatedFields = validateInvoiceFormData(formData);
   if(typeof (validatedFields as tInvoiceFormState).message !== 'undefined'){
     return (validatedFields as tInvoiceFormState)
@@ -88,21 +86,30 @@ export async function createInvoice(prevState:tInvoiceFormState, formData: FormD
 
 }
 
-export async function updateInvoice(invoiceId: string, formData: FormData){
+export async function updateInvoice(invoiceId: string, prevState:tInvoiceFormState, formData: FormData): Promise<tInvoiceFormState>{
 
-  const {customerId, amountInCents, status, currentDate} = validateInvoiceFormData(formData);
+  const validatedFields = validateInvoiceFormData(formData,'invoice not updated');
+  if(typeof (validatedFields as tInvoiceFormState).message !== 'undefined'){
+    return (validatedFields as tInvoiceFormState)
+  }
+
+  const {customerId, amountInCents, status, currentDate} = (validatedFields as tInvoiceFormDataValidated);
+
   try {
     const queryResults = await sql`UPDATE invoices SET customer_id = ${customerId}, amount=${amountInCents}, status=${status}, date=${currentDate} WHERE id=${invoiceId}`;
     console.log('queryResults',queryResults);
 
-    revalidatePath('/dashboard');
-    revalidatePath('/dashboard/invoices');
-
   } catch (error){
     console.error(error);
-    throw new Error("Database Error: Failed to Update Invoice");
+    // throw new Error("Database Error: Failed to Update Invoice");
+    return  {
+      message: 'Database Error: Failed to Update Invoice'
+    }
+
   }
 
+  revalidatePath('/dashboard');
+  revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 
 }
