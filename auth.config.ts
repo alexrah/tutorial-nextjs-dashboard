@@ -7,13 +7,13 @@ export const authConfig = {
   callbacks: {
     authorized({auth, request: {nextUrl}}){
       const isLoggedIn = !!auth?.user;
-      const isOnDashBoard = nextUrl.pathname.startsWith('/dashboard');
-      if(isOnDashBoard){
+      // const isOnDashBoard = nextUrl.pathname.startsWith('/dashboard');
+      // if(isOnDashBoard){
         return isLoggedIn;
-      } else if (isLoggedIn){
-        return Response.redirect(new URL('/dashboard', nextUrl));
-      }
-      return false
+      // } else if (isLoggedIn){
+      //   return Response.redirect(new URL('/dashboard', nextUrl));
+      // }
+      // return false
     },
   },
   providers: [
