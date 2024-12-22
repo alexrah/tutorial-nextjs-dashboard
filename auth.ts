@@ -22,15 +22,10 @@ async function getUserByEmail(email: string) {
   }
 }
 
-export const {signIn, signOut} = NextAuth({
+export const {signIn, signOut, auth} = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
-      name: "Credentials",
-      credentials: {
-        email: {label: "email", type: "text", placeholder: "jsmith"},
-        password: {label: "Password", type: "password"},
-      },
       async authorize(credentials) {
         const credentialsSchema = z.object({
           email: z.string().email(),
