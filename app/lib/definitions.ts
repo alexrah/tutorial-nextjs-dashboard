@@ -10,6 +10,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  capabilities: string[];
 };
 
 export type Customer = {
