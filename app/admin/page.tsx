@@ -9,6 +9,9 @@ export default async function AdminPage(){
   }
 
   return (
-    <h1>Admin Page</h1>
+    <main>
+      <title>This is a hoisted title</title>
+      <h1>Admin Page</h1>
+    </main>
   )
 }
