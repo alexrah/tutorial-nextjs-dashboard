@@ -9,7 +9,7 @@ interface tInvoicesEditPage extends tPageRouteProps<tParams, null> {
   params: Promise<tParams>
 }
 
-export async function InvoicesEditRoute({params}:tInvoicesEditPage) {
+export async function InvoicesEditPageRoute({params}:tInvoicesEditPage) {
 
   const paramsData = await params;
   const invoiceId = paramsData.id;
