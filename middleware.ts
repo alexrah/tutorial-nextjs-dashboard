@@ -18,6 +18,14 @@ export default async function middleware(request: NextRequest) {
     return NextAuth(authConfig).auth(request);
   }
 
+  if (url.pathname.startsWith('login')){
+    // @ts-ignore
+    const session = await NextAuth(authConfig).auth(request);
+    if(session && session?.user){
+      return NextResponse.redirect('/dashboard');
+    }
+  }
+
   // All other routes are accessible without authentication
   return NextResponse.next();
 }
