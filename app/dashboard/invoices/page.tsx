@@ -8,6 +8,10 @@ import { Suspense } from 'react';
 import type { tPageRouteProps, tSearchParams } from '@/app/lib/definitions'
 import {fetchInvoicesPages} from '@/app/lib/data';
 
+export const metadata = {
+  title: "Invoices",
+}
+
 export default async function InvoicesPage({searchParams}:tPageRouteProps<null, tSearchParams>) {
 
   console.log('+++ InvoicesPage +++');

@@ -8,16 +8,16 @@ import {Suspense} from "react";
 
 export default async function DashboardPage() {
 
-  // const {numberOfCustomers, numberOfInvoices, totalPaidInvoices, totalPendingInvoices} = await fetchCardData();
+  const {numberOfCustomers, numberOfInvoices, totalPaidInvoices, totalPendingInvoices} = await fetchCardData();
   // const revenue = await fetchRevenue();
   // const latestInvoices = await fetchLatestInvoices();
 
-  const data = await Promise.all([
-    fetchCardData(),
-    fetchLatestInvoices()
-  ]);
+  // const data = await Promise.all([
+  //   fetchCardData(),
+  //   fetchLatestInvoices()
+  // ]);
 
-  const {numberOfCustomers, numberOfInvoices, totalPaidInvoices, totalPendingInvoices} = data[0];
+  // const {numberOfCustomers, numberOfInvoices, totalPaidInvoices, totalPendingInvoices} = data[0];
 
   return (
     <main>
