@@ -8,13 +8,16 @@ export const authConfig = {
   callbacks: {
     authorized({auth, request: {nextUrl}}){
       const isLoggedIn = !!auth?.user;
-      // const isOnDashBoard = nextUrl.pathname.startsWith('/dashboard');
-      // if(isOnDashBoard){
-        return isLoggedIn;
-      // } else if (isLoggedIn){
-      //   return Response.redirect(new URL('/dashboard', nextUrl));
-      // }
-      // return false
+
+      console.log('isLoggedIn',isLoggedIn);
+
+      const isOnLogin = nextUrl.pathname.startsWith('/login');
+      if(isOnLogin && isLoggedIn){
+        return Response.redirect(new URL('/dashboard', nextUrl));
+      }
+
+      return isLoggedIn;
+
     },
     jwt: async ({token, user}) => {
       if (user) {

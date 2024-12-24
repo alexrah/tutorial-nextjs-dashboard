@@ -12,18 +12,10 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL(rewrittenUrl, url.origin));
   }
 
-  // Require authentication for /dashboard routes
-  if (url.pathname.startsWith('/dashboard')) {
+  // check authentication for /dashboard & /login routes
+  if (url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/login')) {
     // @ts-ignore
     return NextAuth(authConfig).auth(request);
-  }
-
-  if (url.pathname.startsWith('/login')){
-    // @ts-ignore
-    const session = await NextAuth(authConfig).auth(request);
-    if(session){
-      return NextResponse.redirect(new URL('/dashboard', url.origin));
-    }
   }
 
   // All other routes are accessible without authentication
