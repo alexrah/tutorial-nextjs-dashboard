@@ -26,8 +26,8 @@ export const authConfig = {
     },
     session: async ({session, user, token}) => {
 
-      console.log('session user',user);
-      console.log('session token',token);
+      // console.log('session user',user);
+      // console.log('session token',token);
 
       if(session?.user){
         if(token.sub != null){

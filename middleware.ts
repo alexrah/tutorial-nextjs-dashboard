@@ -18,11 +18,11 @@ export default async function middleware(request: NextRequest) {
     return NextAuth(authConfig).auth(request);
   }
 
-  if (url.pathname.startsWith('login')){
+  if (url.pathname.startsWith('/login')){
     // @ts-ignore
     const session = await NextAuth(authConfig).auth(request);
-    if(session && session?.user){
-      return NextResponse.redirect('/dashboard');
+    if(session){
+      return NextResponse.redirect(new URL('/dashboard', url.origin));
     }
   }
 
